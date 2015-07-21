@@ -5,7 +5,7 @@
 void AccInit(void)
 {
 	PORTC.DIRSET = 0b01000000;		//Sleep poort configureren
-	PORTC.PIN6CTRL = 0b00010001;	//5-3: output conf: pull down
+	PORTC.PIN6CTRL = 0b00010001;		//5-3: output conf: pull down
 	PORTC.OUTSET = 0b01000000;		//Zet accelerometer actief
 	
 	PORTA.DIRCLR = 0b00000111;		//Data poorten configureren
