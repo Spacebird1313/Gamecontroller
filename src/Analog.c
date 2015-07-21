@@ -3,8 +3,8 @@
 
 void AnalogInit(void)
 {
-	ADCA.REFCTRL = 0b0000010;							//6-4: referentie 1V (000), 1: Bandgap enabled (1), 0: temperatuursensor uit (0)
-	ADCA.CTRLB = 0b00010000;							//6-5: Current limiet uit (00), 4: signed waardes (1), 3: autorun uit (0), 2-1: uitkomst resolutie: 12 bits rechts (00)
+	ADCA.REFCTRL = 0b0000010;						//6-4: referentie 1V (000), 1: Bandgap enabled (1), 0: temperatuursensor uit (0)
+	ADCA.CTRLB = 0b00010000;						//6-5: Current limiet uit (00), 4: signed waardes (1), 3: autorun uit (0), 2-1: uitkomst resolutie: 12 bits rechts (00)
 	ADCA.PRESCALER = 0b00000010;						//2-0: Prescaler (Divider 16) : 16Mhz -> 1Mhz
 }
 
@@ -27,7 +27,7 @@ int AnalogGetCh(int ChannelPos, int ChannelNeg)
 	
 	ADCA.CTRLA = 0b00000101;		//2: Start ADC, 0: activeer ADC
 	
-	while(ADCA.INTFLAGS == (0x00)); //Wacht voor voltooien huidige conversie
+	while(ADCA.INTFLAGS == (0x00)); 	//Wacht voor voltooien huidige conversie
 	
 	return ADCA.CH0RES;
 }
