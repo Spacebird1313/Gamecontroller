@@ -13,10 +13,10 @@
 #include "speaker.h"
 
 struct note {
-			 int Frequency;
-			 int Length;
-			 struct note *Next;
-			};
+		int Frequency;
+		int Length;
+		struct note *Next;
+	    };
 		
 unsigned char a,b;
 unsigned char ledOn;
@@ -50,14 +50,14 @@ int main(void)
 	ClockInit();			//Initialize system clock (16 MHz)
 	USARTInit();			//Initialize USART and bind to stdout,stdin
 	AnalogInit();			//Initialize ADC
-	AccInit();				//Initialize accelerometer system
-	LEDInit();				//Initialize LEDs
+	AccInit();			//Initialize accelerometer system
+	LEDInit();			//Initialize LEDs
 	SwitchInit();			//Initialize switches
 	EncoderInit();			//Initialize encoder
 	SpeakerInit();			//Initialize speaker system
 	
 	//Enable interrupts
-	PMIC.CTRL|=0b00000111;  //Enable low, medium, high priority interrupts
+	PMIC.CTRL|=0b00000111;  	//Enable low, medium, high priority interrupts
 	SREG|=0b10000000;		//Globale interrupt enable
 
 	//###2###	
@@ -80,18 +80,18 @@ int main(void)
 	
 	//Beeps();		//Genereer 3 beeps van 500hz, 1000hz, 1500hz (500 ms)
 	setNotes();		//Stel een reeks van noten in
-	playNextNote();	//Speel de eerste noot uit de reeks
+	playNextNote();		//Speel de eerste noot uit de reeks
 	
     while(1)
     {
-		LoopLicht();																									//LoopLicht sequentie			
-		AccLezen();																										//Accelerometer lezen
-		printf("$SWITCH %d\r\n", SwitchGet());																			//Switchwaarde over USARTD: 1: center, 2: rechts, 4: beneden, 8: links, 16: boven
-		printf("$ACCRAW %d %d %d\r\n", RawAccX, RawAccY, RawAccZ);														//Ongecalibreerde waardes accelerometer x, y, z over USARTD
-		printf("$ACC__ %d %d %d\r\n", AccGetXAxis(RawAccX), AccGetYAxis(RawAccY), AccGetZAxis(RawAccZ));				//Gecalibreerde waardes accelerometer x, y, z over USARTD
+		LoopLicht();						//LoopLicht sequentie			
+		AccLezen();						//Accelerometer lezen
+		printf("$SWITCH %d\r\n", SwitchGet());			//Switchwaarde over USARTD: 1: center, 2: rechts, 4: beneden, 8: links, 16: boven
+		printf("$ACCRAW %d %d %d\r\n", RawAccX, RawAccY, RawAccZ);						//Ongecalibreerde waardes accelerometer x, y, z over USARTD
+		printf("$ACC__ %d %d %d\r\n", AccGetXAxis(RawAccX), AccGetYAxis(RawAccY), AccGetZAxis(RawAccZ));	//Gecalibreerde waardes accelerometer x, y, z over USARTD
 		printf("$ENC__ %d\r\n", EncoderGetPos());
 		//printf ("Counter:%d\r\n",a);
-		//printf("%c", 0x55);																							//Stuur de waarde 0x55 uit (0b01010101)
+		//printf("%c", 0x55);					//Stuur de waarde 0x55 uit (0b01010101)
 		//a++;
 		_delay_ms(20);
     }
@@ -105,9 +105,9 @@ void SimpleFunction(void)
 
 void LoopLicht(void)
 {
-	if(ledOn == 0x08)							//4de bit actief (led: D4)
+	if(ledOn == 0x08)						//4de bit actief (led: D4)
 	{
-		ledOn = 0x01;							//1ste bit actief (led: D1)
+		ledOn = 0x01;						//1ste bit actief (led: D1)
 	}
 	else
 	{
@@ -146,7 +146,7 @@ void setNotes(void)
 	note9 = (struct note *) malloc (sizeof(struct note));
 	note10 = (struct note *) malloc (sizeof(struct note));
 	
-	note1 -> Frequency = 1000;									//Definieer een noot
+	note1 -> Frequency = 1000;					//Definieer een noot
 	note1 -> Length = 100;
 	note1 -> Next = note2;
 	
@@ -195,13 +195,13 @@ void playNextNote(void)
 	{
 		SpeakerBeep(notePointer->Frequency, notePointer->Length);		//Speel een noot
 		lastNote = notePointer;
-		notePointer = notePointer->Next;								//Wijzig de pointer naar de nieuwe noot
-		free(lastNote);													//Verwijder de laatst afgespeelde noot uit het geheugen
+		notePointer = notePointer->Next;					//Wijzig de pointer naar de nieuwe noot
+		free(lastNote);								//Verwijder de laatst afgespeelde noot uit het geheugen
 	}
-	else																//Geen volgende noot beschikbaar
+	else										//Geen volgende noot beschikbaar
 	{
-		free(notePointer);												//Verwijder de laatst afgespeelde noot uit het geheugen
-		setNotes();														//Stel een reeks van noten in
-		//playNextNote();												//Speel de eerste noot uit de reeks
+		free(notePointer);							//Verwijder de laatst afgespeelde noot uit het geheugen
+		setNotes();								//Stel een reeks van noten in
+		//playNextNote();							//Speel de eerste noot uit de reeks
 	}
 }
